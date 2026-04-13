@@ -23,16 +23,14 @@ class MedicalRecord(models.Model):
     patient = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='patient_records',
-        limit_choices_to={'profile__role': 'patient'}
+        related_name='patient_records'
     )
     doctor = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='doctor_records',
-        limit_choices_to={'profile__role': 'doctor'}
+        related_name='doctor_records'
     )
     diagnosis = models.CharField(max_length=255)
     treatment = models.TextField()
@@ -41,3 +39,39 @@ class MedicalRecord(models.Model):
 
     def __str__(self):
         return f"Record for {self.patient.username} on {self.record_date}"
+
+
+class Appointment(models.Model):
+    STATUS_CHOICES = (
+        ('Pending', 'Pending'),
+        ('Confirmed', 'Confirmed'),
+        ('Cancelled', 'Cancelled'),
+    )
+
+    patient = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='patient_appointments'
+    )
+    doctor = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='doctor_appointments'
+    )
+    appointment_date = models.DateField()
+    appointment_time = models.TimeField()
+    reason = models.TextField(blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-appointment_date', '-appointment_time']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['doctor', 'appointment_date', 'appointment_time'],
+                name='unique_doctor_appointment_slot'
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.patient.username} with {self.doctor.username} on {self.appointment_date} at {self.appointment_time}"

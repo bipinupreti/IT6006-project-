@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Book Appointment</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Book Appointment</button>
+    <a href="{% url 'patient_dashboard' %}" class="btn">Back</a>
+</form>
+{% endblock %}
