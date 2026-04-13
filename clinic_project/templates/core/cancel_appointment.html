@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Cancel Appointment</h2>
+
+<p>Are you sure you want to cancel this appointment?</p>
+
+<ul>
+    <li><strong>Doctor:</strong> {{ appointment.doctor.username }}</li>
+    <li><strong>Date:</strong> {{ appointment.appointment_date }}</li>
+    <li><strong>Time:</strong> {{ appointment.appointment_time }}</li>
+    <li><strong>Status:</strong> {{ appointment.status }}</li>
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Cancel</button>
+    <a href="{% url 'patient_dashboard' %}" class="btn">No, Go Back</a>
+</form>
+{% endblock %}
