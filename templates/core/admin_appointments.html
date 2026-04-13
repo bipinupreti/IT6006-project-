@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Manage Appointments</h2>
+
+<a href="{% url 'admin_dashboard' %}" class="btn">Back to Admin Dashboard</a>
+
+{% if appointments %}
+<table>
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in appointments %}
+        <tr>
+            <td>{{ appointment.patient.username }}</td>
+            <td>{{ appointment.doctor.username }}</td>
+            <td>{{ appointment.appointment_date }}</td>
+            <td>{{ appointment.appointment_time }}</td>
+            <td>{{ appointment.reason }}</td>
+            <td>{{ appointment.status }}</td>
+            <td>
+                <a href="{% url 'admin_update_appointment' appointment.id %}" class="btn">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No appointments found.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Doctor Dashboard</h2>
+
+<p>Welcome, Dr. {{ request.user.username }}.</p>
+
+{% if profile %}
+    <p><strong>Email:</strong> {{ request.user.email }}</p>
+    <p><strong>Phone:</strong> {{ profile.phone }}</p>
+    <p><strong>Address:</strong> {{ profile.address }}</p>
+
+    {% if profile.image %}
+        <img src="{{ profile.image.url }}" alt="Doctor Image" class="profile-img">
+    {% endif %}
+{% endif %}
+
+<h3 style="margin-top: 30px;">Manage Appointments</h3>
+
+{% if appointments %}
+<table>
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in appointments %}
+        <tr>
+            <td>{{ appointment.patient.username }}</td>
+            <td>{{ appointment.appointment_date }}</td>
+            <td>{{ appointment.appointment_time }}</td>
+            <td>{{ appointment.reason }}</td>
+            <td>{{ appointment.status }}</td>
+            <td>
+                {% if appointment.status == 'Pending' %}
+                    <a href="{% url 'confirm_appointment' appointment.id %}" class="btn">Confirm</a>
+                    <a href="{% url 'doctor_cancel_appointment' appointment.id %}" class="btn btn-danger">Cancel</a>
+                {% elif appointment.status == 'Confirmed' %}
+                    <a href="{% url 'doctor_cancel_appointment' appointment.id %}" class="btn btn-danger">Cancel</a>
+                {% else %}
+                    Cancelled
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No appointments assigned yet.</p>
+{% endif %}
+{% endblock %}
