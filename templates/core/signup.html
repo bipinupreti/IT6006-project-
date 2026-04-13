@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px;">Create Account</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Sign Up</button>
+</form>
+
+<p style="margin-top: 18px;">
+    Already have an account?
+    <a href="{% url 'login' %}">Login</a>
+</p>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const roleField = document.querySelector('select[name="role"]');
+        const specialtyField = document.querySelector('select[name="specialty"]');
+
+        if (!roleField || !specialtyField) {
+            return;
+        }
+
+        const specialtyWrapper = specialtyField.closest('p');
+
+        function updateSpecialtyVisibility() {
+            const isDoctor = roleField.value === 'doctor';
+            if (specialtyWrapper) {
+                specialtyWrapper.style.display = isDoctor ? '' : 'none';
+            }
+            specialtyField.disabled = !isDoctor;
+            if (!isDoctor) {
+                specialtyField.value = '';
+            }
+        }
+
+        roleField.addEventListener('change', updateSpecialtyVisibility);
+        updateSpecialtyVisibility();
+    });
+</script>
+{% endblock %}

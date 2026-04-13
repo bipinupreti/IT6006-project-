@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit Doctor Profile: {{ doctor_user.username }}</h2>
+
+<a href="{% url 'admin_doctors' %}" class="btn">Back to Doctor List</a>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+        <legend>User Info</legend>
+        {{ user_form.as_p }}
+    </fieldset>
+    <fieldset>
+        <legend>Profile Info</legend>
+        {{ profile_form.as_p }}
+    </fieldset>
+    <button type="submit" class="btn">Save Changes</button>
+</form>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<p>Welcome, {{ request.user.username }}.</p>
+
+<div class="card-grid">
+    <div class="card">
+        <h3>Total Users</h3>
+        <div class="count">{{ total_users }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Total Patients</h3>
+        <div class="count">{{ total_patients }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Total Doctors</h3>
+        <div class="count">{{ total_doctors }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Total Admins</h3>
+        <div class="count">{{ total_admins }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Total Appointments</h3>
+        <div class="count">{{ total_appointments }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Total Medical Records</h3>
+        <div class="count">{{ total_medical_records }}</div>
+    </div>
+</div>
+
+<div style="margin-top: 30px;">
+    <a href="{% url 'admin_doctors' %}" class="btn">Manage Doctors</a>
+    <a href="{% url 'admin_appointments' %}" class="btn">Manage Appointments</a>
+    <a href="/admin/" class="btn">Open Django Admin</a>
+</div>
+{% endblock %}
